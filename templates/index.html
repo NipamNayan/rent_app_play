@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Available Rooms - RoomRover Rentals{% endblock %}
+
+{% block content %}
+    <div class="filter-section">
+        <h2>Available Rooms & Cars for Rent</h2>
+        
+        <form method="GET" action="{{ url_for('index') }}" class="filter-form">
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="min_price">Min Price (₹):</label>
+                    <input type="number" id="min_price" name="min_price" min="0" value="{{ min_price }}" placeholder="Min">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="max_price">Max Price (₹):</label>
+                    <input type="number" id="max_price" name="max_price" min="0" value="{{ max_price }}" placeholder="Max">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status">
+                        <option value="">All Statuses</option>
+                        {% for option in status_options %}
+                            <option value="{{ option }}" {% if status == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="type">Type:</label>
+                    <select id="type" name="type">
+                        <option value="">All Types</option>
+                        {% for option in type_options %}
+                            <option value="{{ option }}" {% if type == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-filter">Apply Filters</button>
+                    <a href="{{ url_for('index') }}" class="btn btn-reset">Reset</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    {% if listings|length == 0 %}
+        <div class="no-results">
+            <p>No listings found matching your criteria. Please try different filters.</p>
+        </div>
+    {% else %}
+        <div class="listings-grid">
+            {% for listing in listings %}
+                <div class="listing-card">
+                    <div class="listing-image">
+                        {% if listing.images %}
+                            <img src="{{ url_for('static', filename='uploads/' + listing.images[0]) }}" alt="{{ listing.title }}">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='uploads/1f8ecf990061459ebdf2bdb3887afd92_images.jpeg') }}" alt="{{ listing.title }}">
+                        {% endif %}
+                    </div>
+                    <div class="listing-details">
+                        <h3>{{ listing.title }}</h3>
+                        <p class="address">{{ listing.address }}</p>
+                        <p class="rooms">{{ listing.rooms }} Room(s)</p>
+                        <p class="price">₹{{ listing.price }}{% if listing.price_type == 'day' %}/day{% else %}/month{% endif %}</p>
+                        <p class="listing-type">{{ listing.type }}</p>
+                        <p class="listing-status {{ listing.status.lower() }}">{{ listing.status }}</p>
+                        <div class="listing-actions">
+                            <a href="{{ url_for('listing_detail', listing_id=listing.id) }}" class="btn">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %} 

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Debug Info - RoomRover Rentals{% endblock %}
+
+{% block content %}
+    <h2>Debug Information</h2>
+    
+    <div class="debug-info">
+        <h3>Listings and Images</h3>
+        
+        {% for listing in debug_info %}
+            <div class="debug-listing">
+                <h4>{{ listing.title }} (ID: {{ listing.id }})</h4>
+                <p>Image Count: {{ listing.image_count }}</p>
+                
+                <ul>
+                    {% for image in listing.images %}
+                        <li>
+                            Image ID: {{ image.id }}, 
+                            Filename: {{ image.filename }} (Type: {{ image.type }})
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %} 

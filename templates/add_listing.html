@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Add New Listing - RoomRover Rentals{% endblock %}
+
+{% block content %}
+    <h2>Add New Listing</h2>
+    
+    <form method="POST" enctype="multipart/form-data" class="listing-form">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" required>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="rooms">Number of Rooms</label>
+                <input type="number" id="rooms" name="rooms" min="0" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="price">Price (₹)</label>
+                <input type="number" id="price" name="price" min="1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="price_type">Price Type</label>
+                <select id="price_type" name="price_type" required>
+                    <option value="month">Per Month</option>
+                    <option value="day">Per Day</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status" required>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="type">Type</label>
+                <select id="type" name="type" required>
+                    <option value="AnyOne">AnyOne</option>
+                    <option value="Boys Only">Boys Only</option>
+                    <option value="Girls Only">Girls Only</option>
+                    <option value="Family">Family</option>
+                    <option value="Car">Car</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="owner_name">Owner Name</label>
+            <input type="text" id="owner_name" name="owner_name" required>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="owner_email">Owner Email</label>
+                <input type="email" id="owner_email" name="owner_email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="owner_phone">Owner Phone</label>
+                <input type="tel" id="owner_phone" name="owner_phone" required>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="images">Images (Multiple files allowed)</label>
+            <input type="file" id="images" name="images" accept="image/*" multiple>
+            <small>If no images are uploaded, a placeholder will be used.</small>
+        </div>
+        
+        <button type="submit" class="btn">Add Listing</button>
+    </form>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const typeSelect = document.getElementById('type');
+            const priceTypeSelect = document.getElementById('price_type');
+            
+            // Set initial price type based on selected type
+            function updatePriceType() {
+                if (typeSelect.value === 'Car') {
+                    priceTypeSelect.value = 'day';
+                }
+            }
+            
+            // Update price type when type changes
+            typeSelect.addEventListener('change', updatePriceType);
+            
+            // Set initial price type
+            updatePriceType();
+        });
+    </script>
+{% endblock %} 
